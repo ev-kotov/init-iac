@@ -1,0 +1,6 @@
+[Unit]
+Description=Podman Image Prune Service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/podman image prune -f --filter until=168h
