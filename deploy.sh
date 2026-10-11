@@ -10,13 +10,13 @@ W="WARNING"
 E="ERROR"
 S="SUCCESS"
 
-QUADLET_DIR="$HOME/.config/containers/systemd"
-USER_UNIT_DIR="$HOME/.config/systemd/user"
-PROJECT_DIR="$HOME/projects/init-iac"
-
 log "$I" "Checking environment."
 log "$I" "User: $USER."
 log "$I" "Home directory: $HOME."
+
+QUADLET_DIR="$HOME/.config/containers/systemd"
+USER_UNIT_DIR="$HOME/.config/systemd/user"
+PROJECT_DIR="$HOME/projects/init-iac"
 
 if [ ! -S "/run/user/$UID/podman/podman.sock" ]; then
     log "$W" "Podman socket not found. Run: systemctl --user enable --now podman.socket"
@@ -39,13 +39,19 @@ loginctl enable-linger "$USER"
 log "$I" "Reloading systemd configuration"
 systemctl --user daemon-reload
 
-log "$S" "Public network:"
+log "$I" "Restart Traefik-network service"
+systemctl --user restart traefik-public-network.service
+
+log "$S" "Created unit service:"
+systemctl --user list-unit-files | grep traefik-public-network
+
+log "$S" "Created public network:"
 podman network ls | grep traefik
 
 log "$I" "Activating timers."
 systemctl --user enable --now podman-prune.timer
 
-log "$S" "New timer:"
+log "$S" "Created timer:"
 systemctl --user list-timers | grep podman-prune
 
 log "$S" "Base for deploying rootless services is ready."

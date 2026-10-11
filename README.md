@@ -1,8 +1,16 @@
 # init-iac
 
+## Run
+
 ```bash
 chmod +x deploy.sh
 sh deploy.sh
 ```
 
-And see results.
+## Update
+
+Change iac and execute:
+
+```bash
+sh deploy.sh
+```

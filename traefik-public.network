@@ -1,8 +1,2 @@
 [Network]
 NetworkName=traefik-public
-
-```bash
-chmod +x depoloy.sh
-
-sh deploy.sh
-```
